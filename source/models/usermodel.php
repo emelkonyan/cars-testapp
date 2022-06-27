@@ -3,6 +3,9 @@
 class UserModel extends BaseModel {
 
     function __construct($userId = null) {
+        /** If instanciated without userID get the current logged user
+         * TODO: check if there is user logged
+         */
         if(!$userId) {
             $userId = Session::get("logged_user_id");
         }
@@ -10,6 +13,27 @@ class UserModel extends BaseModel {
         $this->me = $user;
         return $this;
     }
+    
+    function subscribe($sub) {
+        $values['user_id'] = $this->me['id'];
+        $values['payload'] = json_encode($sub);
+
+        DB::from("subs")::insert($values);
+    }
+
+    function unsubscribe($libid) {
+        /** TODO: change the limit of delete */
+        DB::from("subs")::where("id", $libid)::delete();
+    }
+
+    function getSubs() {
+        $subs = DB::from("subs")::where("user_id", $this->me['id'])::get();
+        return $subs;
+    }
+
+    /**
+     * The static methods below are used for non-logged/non-instanciated users
+     */
 
     static function checkIfExists($username) {
         return DB::from('users')::where("LOWER(username)", strtolower($username))::exists();
@@ -30,29 +54,13 @@ class UserModel extends BaseModel {
     }
 
     static function makePassword($password) {
+        /** Some basic password hash */
         $salt = SETTINGS['mysql']['salt'];
         return md5($salt . $password);
     }
 
     static function isLogged() {
         return Session::get("logged_user");
-    }
-
-
-    function subscribe($sub) {
-        $values['user_id'] = $this->me['id'];
-        $values['payload'] = json_encode($sub);
-
-        DB::from("subs")::insert($values);
-    }
-
-    function unsubscribe($libid) {
-        DB::from("subs")::where("id", $libid)::delete();
-    }
-
-    function getSubs() {
-        $subs = DB::from("subs")::where("user_id", $this->me['id'])::get();
-        return $subs;
     }
 
 

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Very basic query builder
+ */
 
 class DB {
 
@@ -9,6 +11,7 @@ class DB {
     static private $wheres;
 
     static function returnInstance() {
+        /** Singleton method */
         if(!self::$instance) {
             self::$instance = new DB();
         }
@@ -47,6 +50,10 @@ class DB {
     function delete() {
         $table = self::$table;
         $wheres = implode(' AND ', self::$wheres);
+        /** We curently use the delete method to delete a single line
+         * TODO: either implement limit() method
+         * or take the limit as a parameter for this method
+         */
         $query = "DELETE FROM {$table} WHERE {$wheres} LIMIT 1";
         self::query($query);
         self::initClauses();
@@ -54,6 +61,7 @@ class DB {
 
     static function buildQuery() {
         $table = self::$table;
+        /** SANITIZE!!!!! INPUTS!!!!! */
         $selects = self::$selects ? implode(',', self::$selects) : '*';
         $wheres = implode(' AND ', self::$wheres);
         
@@ -84,7 +92,9 @@ class DB {
     static function query($query) {
         $mysqlData = SETTINGS['mysql'];
         $connection = new mysqli("localhost", $mysqlData['username'], $mysqlData['password'], $mysqlData['database']);
-        
+        /** Defintatelly not the best way to init a new connection every time
+         *  TODO: make a constant DB connection for thread optimization
+         */
         if ($connection->connect_errno) {
             echo "Failed to connect to MySQL database: " . $connection->connect_error;
             exit();

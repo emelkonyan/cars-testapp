@@ -1,4 +1,5 @@
 <?php
+/** Not the best idea to keep passwords and keys here, but OK for test projects */
 $settings = [
     'mysql' => [
         'username'  => 'testappuser',

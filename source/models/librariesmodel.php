@@ -30,6 +30,7 @@ class LibrariesModel extends BaseModel {
     }
 
     function getPlatformsHtml($selected) {
+        /** Take the HTML heavy lifting out of the template */
         $allPlatforms = ['Packagist', 'NPM', 'GO', 'NuGET'];
         $output = "<select name=search[platform]>";
         $output .= "<option value=''>All</option>";
