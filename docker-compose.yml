@@ -1,0 +1,32 @@
+version: '2'
+
+volumes:
+  datafiles:
+
+services:
+  mysql:
+    image: mysql:8.0.0
+    container_name: mysql8
+    volumes:
+      - datafiles:/var/lib/mysql
+    restart: always
+
+  website:
+    container_name: php73
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_DBHOST=mysql
+      - MYSQL_DBPORT=3306
+      - MYSQL_DBUSER=testappuser
+      - MYSQL_DBPASS=testapppassword
+      - MYSQL_DBNAME=testapp
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROOT_PASSWORD=ddddd
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+    ports:
+      - 8080:80
+      - 8083:443
+    depends_on:
+      - mysql

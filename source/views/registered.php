@@ -1,0 +1,1 @@
+<h1>Registration successful, click <a href="/login">here</a> to login</h1>
