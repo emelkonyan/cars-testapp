@@ -2,6 +2,7 @@
 /** Not the best idea to keep passwords and keys here, but OK for test projects */
 $settings = [
     'mysql' => [
+        'hostname'  => 'mysql8',
         'username'  => 'testappuser',
         'password'  => 'testapppassword',
         'database'  => 'testapp',

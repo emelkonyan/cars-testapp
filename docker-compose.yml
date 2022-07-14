@@ -9,24 +9,25 @@ services:
     container_name: mysql8
     volumes:
       - datafiles:/var/lib/mysql
+      - ./init/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=testappuser
+      - MYSQL_PASSWORD=testapppassword
+      - MYSQL_DATABASE=testapp
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "9906:3306"
 
   website:
     container_name: php73
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - MYSQL_DBHOST=mysql
-      - MYSQL_DBPORT=3306
-      - MYSQL_DBUSER=testappuser
-      - MYSQL_DBPASS=testapppassword
-      - MYSQL_DBNAME=testapp
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_ROOT_PASSWORD=ddddd
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
     ports:
-      - 8080:80
-      - 8083:443
+      - "8080:80"
+      - "8083:443"
     depends_on:
       - mysql

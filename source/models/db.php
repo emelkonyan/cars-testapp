@@ -91,7 +91,7 @@ class DB {
 
     static function query($query) {
         $mysqlData = SETTINGS['mysql'];
-        $connection = new mysqli("localhost", $mysqlData['username'], $mysqlData['password'], $mysqlData['database']);
+        $connection = new mysqli($mysqlData['hostname'], $mysqlData['username'], $mysqlData['password'], $mysqlData['database']);
         /** Defintatelly not the best way to init a new connection every time
          *  TODO: make a constant DB connection for thread optimization
          */

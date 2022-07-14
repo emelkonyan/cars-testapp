@@ -42,7 +42,7 @@ class UserModel extends BaseModel {
     static function registerUser($username, $password) {
         $array = [
             'username' => $username,
-            'password' => selft::makePassword($password)
+            'password' => self::makePassword($password)
         ];
         DB::from('users')::insert($array);
     }
