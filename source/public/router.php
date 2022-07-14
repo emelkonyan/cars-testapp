@@ -1,6 +1,0 @@
-<?php
-    /*** File includes */
-
-    /*** Routing */
-    
-?>
